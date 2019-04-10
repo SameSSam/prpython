@@ -15,8 +15,10 @@ file_dir = "D:\\tmp\\pdffiles\\single_test\\"
 def socket_to_printer(conn,file_dir):
 #Open printing files with rb and send them to printer:
     # file_dir = "C:\\Users\Kaka6\\Documents\\CloudClass\\PDFDOCS\\pdf17\\"
+    conn.send(lexlp.pr_msg_init().encode())
+    conn.send(lexlp.pr_status_job_start().encode())
     filenames = [files for root,dirs,files in os.walk(file_dir)]
-    for file in filenames[0][0:3] :
+    for file in filenames[0][0:20] :
 #pdfjob start
         try:
             filename = file_dir + file
@@ -35,6 +37,7 @@ def socket_to_printer(conn,file_dir):
             # lexlp.eot_ack(conn)
         except IOError as e :
             print('file IO Error: ', e)
+    conn.send(lexlp.pr_status_job_end().encode())
 
 if __name__ == '__main__':
     threading.Thread(target = socket_to_printer,args = (lp_conn,file_dir)).start()

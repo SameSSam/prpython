@@ -19,8 +19,8 @@ def pr_msg_end() :
 def pr_status_job_start() :
 	job_comment = '@PJL COMMENT **Beginning of Job ** \r\n'
 	job_name = '@PJL JOB NAME="PS_JOB" \r\n'
-	job_ustatus = '@PJL USTATUS JOB=ON \r\n' \
-				  '@PJL USTATUS DEVICE = VERBOSE \r\n'
+	job_ustatus = '@PJL USTATUS JOB=ON \r\n' 
+				  # '@PJL USTATUS DEVICE = VERBOSE \r\n'
 	job_lang =  '@PJL ENTER LANGUAGE = POSTSCRIPT \r\n' \
 
 	job_start_str = job_comment + job_name + job_ustatus + pr_msg_init() + job_lang
@@ -53,17 +53,17 @@ def eot_ack(conn) :
 		print('reading status from printer................')
 		print(eot_ack)
 		# if eot_ack == b'\x04':
-		if eot_ack == b'' :
+		if b'END' in eot_ack :
 			break
 		# else :
 		# 	print('No data received.')
 		# 	break
 
 def send_to_pr(conn, filename) :
-	conn.send(pr_msg_init().encode())
-	conn.send(pr_status_job_start().encode())
+	# conn.send(pr_msg_init().encode())
+	# conn.send(pr_status_job_start().encode())
 	file_bytes_stream(conn,filename)
-	conn.send(pr_msg_end().encode())
+	# conn.send(pr_status_job_end().encode())
 	
 	
 
