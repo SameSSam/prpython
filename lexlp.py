@@ -19,8 +19,8 @@ def pr_msg_end() :
 def pr_status_job_start() :
 	job_comment = '@PJL COMMENT **Beginning of Job ** \r\n'
 	job_name = '@PJL JOB NAME="PS_JOB" \r\n'
-	job_ustatus = '@PJL USTATUS JOB=ON \r\n' 
-				  # '@PJL USTATUS DEVICE = VERBOSE \r\n'
+	job_ustatus = '@PJL USTATUS JOB=ON \r\n' \
+				  '@PJL USTATUS DEVICE = VERBOSE \r\n'
 	job_lang =  '@PJL ENTER LANGUAGE = POSTSCRIPT \r\n' \
 
 	job_start_str = job_comment + job_name + job_ustatus + pr_msg_init() + job_lang
@@ -31,7 +31,7 @@ def pr_status_job_end() :
 	return (pr_msg_end() + pr_msg_init() + job_eoj)
 
 #single file send to socket
-def file_bytes_stream(conn,postscript_file) :
+def send_to_pr(conn,postscript_file) :
 	bytes_file = open(postscript_file,'rb')
 	while True :
 		bytes_stream = bytes_file.read(1024)
@@ -40,31 +40,13 @@ def file_bytes_stream(conn,postscript_file) :
 		conn.sendall(bytes_stream)
 	bytes_file.close()
 
-def pr_status_read(conn) :
-	while True :
-		recv_data = conn.recv(1024)
-		if not recv_data :
-			break
-	return print(recv_data)
-
-def eot_ack(conn) :
+def pr_eot_ack(conn) :
 	while True :
 		eot_ack = conn.recv(1024)
 		print('reading status from printer................')
 		print(eot_ack)
-		# if eot_ack == b'\x04':
 		if b'END' in eot_ack :
 			break
-		# else :
-		# 	print('No data received.')
-		# 	break
-
-def send_to_pr(conn, filename) :
-	# conn.send(pr_msg_init().encode())
-	# conn.send(pr_status_job_start().encode())
-	file_bytes_stream(conn,filename)
-	# conn.send(pr_status_job_end().encode())
-	
 	
 
 	
