@@ -4,7 +4,7 @@ import socket,time,struct,os,threading
 host = '0.0.0.0'
 port = 8080
 
-printer_ip = '192.168.1.177'
+printer_ip = '192.168.1.135'
 printer_port = 9100
 
 pdf_dirname = '/tmp/pdffiles/'
@@ -118,6 +118,8 @@ def conn_send_mapping(local_conn, remote_conn) :
                 print("ps_file_count is %s" %ps_file_count)
                 
                 ps_filename = ps_dirname + 'ps_' + str(ps_file_count) + '.ps'
+                # os.system("pdftops -level3 " + file_new +' ' + ps_filename)
+
                 os.system("pdftops -level3 " + file_opt +' ' + ps_filename)
                 print('One pdf file Converted to psfile: %s ' %ps_filename)
 
@@ -150,10 +152,11 @@ if __name__ == '__main__':
     while True :
         clean_dir(pdf_dirname)
         clean_dir(ps_dirname)
-        remote_conn = conn_to_printer(printer_ip,printer_port)
+        # remote_conn = conn_to_printer(printer_ip,printer_port)
         print('Agent Server is starting new session-----------')
         local_conn,address = s.accept()
         print('Connected by Client: %s %s' %address)
+        remote_conn = conn_to_printer(printer_ip,printer_port)
         threading.Thread(target=conn_send_mapping,args=(local_conn,remote_conn)).start()
         t=threading.Thread(target=pr_eot_ack,args = (local_conn,remote_conn))
         t.start()
