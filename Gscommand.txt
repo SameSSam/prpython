@@ -1,0 +1,3 @@
+gs -o test_opt_99.pdf -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dPDFSETTINGS=/default -dCompressFonts=true -dCompatibilityLevel=1.6 -dDetectDuplicateImages=true test99.pdf
+
+pdftops -level3 test_opt_99.pdf
