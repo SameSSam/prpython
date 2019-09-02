@@ -4,7 +4,7 @@ import socket,os,struct,time,threading
 def conn_send(conn) :
 	file_dir = "D:\\tmp\\pdffiles\\30pdf\\"
 	filelists = [files for root,dirs,files in os.walk(file_dir)]
-	for file in filelists[0][0:30] : 
+	for file in filelists[0][0:25] : 
 		if file :
 			fileinfo_size = struct.calcsize('128si')
 			filesize = os.stat(file_dir+file).st_size
@@ -26,7 +26,9 @@ def conn_recv(conn) :
 		eot_ack = conn.recv(2048)
 		print('reading status from printer................')
 		print(eot_ack)
-		if b'END' in eot_ack :
+		# if b'END' in eot_ack :
+		# 	break
+		if (b'END' in eot_ack) or (not eot_ack) :
 			break
 	
 

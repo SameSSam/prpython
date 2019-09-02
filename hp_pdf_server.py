@@ -26,7 +26,9 @@ def pr_eot_ack(conn_server, conn_printer) :
         conn_server.sendall(eot_ack)
         print('reading status from printer and send to client................')
         print(eot_ack)
-        if b'END' in eot_ack :
+        # if b'END' in eot_ack :
+        #     break
+        if (b'END' in eot_ack) or (not eot_ack) :
             break
     conn_printer.close()
 
